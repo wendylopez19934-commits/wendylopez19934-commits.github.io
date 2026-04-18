@@ -209,6 +209,108 @@
       font-size: 0.85rem;
     }
 
+    /* --- TOOLS --- */
+    #tools {
+      padding: 5rem 1.5rem;
+    }
+
+    .tool-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: none;
+      border: 1px solid rgba(79, 70, 229, 0.2);
+      border-radius: 999px;
+      padding: 0.45rem 1.1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    .tool-panel { display: none; flex-direction: column; gap: 0.75rem; }
+    .tool-panel.active { display: flex; }
+
+    .tool-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .tool-col { display: flex; flex-direction: column; gap: 0.4rem; }
+
+    .tool-col label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 130px;
+      padding: 0.75rem;
+      border: 1px solid rgba(79, 70, 229, 0.15);
+      border-radius: 10px;
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      background: var(--bg);
+      color: var(--text);
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+
+    textarea:focus { outline: none; border-color: var(--accent); }
+
+    .tool-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tool-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 0.5rem 1.25rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .tool-btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .tool-btn.secondary { background: var(--accent-light); color: var(--accent); }
+    .tool-btn.secondary:hover { background: #ddd6fe; }
+
+    .tool-msg {
+      font-size: 0.8rem;
+      color: var(--muted);
+      min-height: 1.2em;
+    }
+    .tool-msg.error { color: #dc2626; }
+    .tool-msg.ok { color: #16a34a; }
+
+    .hash-options {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .hash-options label { font-size: 0.85rem; color: var(--muted); display: flex; align-items: center; gap: 0.3rem; cursor: pointer; }
+
     /* --- ANIMATION --- */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(24px); }
@@ -219,6 +321,7 @@
     @media (max-width: 600px) {
       .nav-links { display: none; }
       .links-grid { grid-template-columns: 1fr 1fr; }
+      .tool-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -228,6 +331,7 @@
     <nav>
       <span class="nav-logo">Wendy Lopez</span>
       <ul class="nav-links">
+        <li><a href="#tools">Tools</a></li>
         <li><a href="#links">Links</a></li>
       </ul>
     </nav>
@@ -239,6 +343,85 @@
       <h1>Hi, I'm <span>Wendy Lopez</span></h1>
       <p class="tagline">Software developer &middot; Open source enthusiast &middot; Lifelong learner</p>
       <a href="#links" class="btn">Find me online &darr;</a>
+    </div>
+  </section>
+
+  <section id="tools">
+    <div class="section-inner">
+      <h2>Tools</h2>
+      <p class="section-sub">Handy utilities that run entirely in your browser.</p>
+
+      <div class="tool-tabs">
+        <button class="tab-btn active" data-tab="base64">Base64</button>
+        <button class="tab-btn" data-tab="json">JSON Formatter</button>
+        <button class="tab-btn" data-tab="hash">Hash Generator</button>
+      </div>
+
+      <!-- Base64 -->
+      <div class="tool-panel active" id="tab-base64">
+        <div class="tool-row">
+          <div class="tool-col">
+            <label>Input</label>
+            <textarea id="b64-input" placeholder="Enter text or Base64 string…"></textarea>
+          </div>
+          <div class="tool-col">
+            <label>Output</label>
+            <textarea id="b64-output" readonly placeholder="Result will appear here…"></textarea>
+          </div>
+        </div>
+        <div class="tool-actions">
+          <button class="tool-btn" onclick="b64Encode()">Encode</button>
+          <button class="tool-btn" onclick="b64Decode()">Decode</button>
+          <button class="tool-btn secondary" onclick="b64Copy()">Copy output</button>
+          <button class="tool-btn secondary" onclick="b64Clear()">Clear</button>
+        </div>
+        <span class="tool-msg" id="b64-msg"></span>
+      </div>
+
+      <!-- JSON -->
+      <div class="tool-panel" id="tab-json">
+        <div class="tool-row">
+          <div class="tool-col">
+            <label>Input JSON</label>
+            <textarea id="json-input" placeholder='{"key": "value"}'></textarea>
+          </div>
+          <div class="tool-col">
+            <label>Formatted</label>
+            <textarea id="json-output" readonly placeholder="Formatted JSON will appear here…"></textarea>
+          </div>
+        </div>
+        <div class="tool-actions">
+          <button class="tool-btn" onclick="jsonFormat()">Format</button>
+          <button class="tool-btn" onclick="jsonMinify()">Minify</button>
+          <button class="tool-btn secondary" onclick="jsonCopy()">Copy output</button>
+          <button class="tool-btn secondary" onclick="jsonClear()">Clear</button>
+        </div>
+        <span class="tool-msg" id="json-msg"></span>
+      </div>
+
+      <!-- Hash -->
+      <div class="tool-panel" id="tab-hash">
+        <div class="tool-col">
+          <label>Input text</label>
+          <textarea id="hash-input" placeholder="Enter text to hash…" style="min-height:90px"></textarea>
+        </div>
+        <div class="hash-options">
+          <span style="font-size:.8rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Algorithm:</span>
+          <label><input type="radio" name="hash-alg" value="SHA-1"> SHA-1</label>
+          <label><input type="radio" name="hash-alg" value="SHA-256" checked> SHA-256</label>
+          <label><input type="radio" name="hash-alg" value="SHA-512"> SHA-512</label>
+        </div>
+        <div class="tool-col">
+          <label>Hash output</label>
+          <textarea id="hash-output" readonly placeholder="Hash will appear here…" style="min-height:70px"></textarea>
+        </div>
+        <div class="tool-actions">
+          <button class="tool-btn" onclick="generateHash()">Generate hash</button>
+          <button class="tool-btn secondary" onclick="hashCopy()">Copy output</button>
+          <button class="tool-btn secondary" onclick="hashClear()">Clear</button>
+        </div>
+        <span class="tool-msg" id="hash-msg"></span>
+      </div>
     </div>
   </section>
 
@@ -280,5 +463,90 @@
     <p>&copy; 2026 Wendy Lopez &middot; Built with HTML &amp; CSS</p>
   </footer>
 
+  <script>
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tool-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    function setMsg(id, text, type = '') {
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className = 'tool-msg' + (type ? ' ' + type : '');
+    }
+
+    async function copyText(text, msgId) {
+      try { await navigator.clipboard.writeText(text); setMsg(msgId, 'Copied!', 'ok'); }
+      catch { setMsg(msgId, 'Copy failed — select and copy manually.', 'error'); }
+    }
+
+    // Base64
+    function b64Encode() {
+      try {
+        const out = btoa(unescape(encodeURIComponent(document.getElementById('b64-input').value)));
+        document.getElementById('b64-output').value = out;
+        setMsg('b64-msg', '');
+      } catch { setMsg('b64-msg', 'Encoding failed.', 'error'); }
+    }
+    function b64Decode() {
+      try {
+        const out = decodeURIComponent(escape(atob(document.getElementById('b64-input').value.trim())));
+        document.getElementById('b64-output').value = out;
+        setMsg('b64-msg', '');
+      } catch { setMsg('b64-msg', 'Invalid Base64 input.', 'error'); }
+    }
+    function b64Copy() { copyText(document.getElementById('b64-output').value, 'b64-msg'); }
+    function b64Clear() {
+      document.getElementById('b64-input').value = '';
+      document.getElementById('b64-output').value = '';
+      setMsg('b64-msg', '');
+    }
+
+    // JSON
+    function jsonFormat() {
+      try {
+        const parsed = JSON.parse(document.getElementById('json-input').value);
+        document.getElementById('json-output').value = JSON.stringify(parsed, null, 2);
+        setMsg('json-msg', 'Valid JSON.', 'ok');
+      } catch (e) { setMsg('json-msg', 'Invalid JSON: ' + e.message, 'error'); }
+    }
+    function jsonMinify() {
+      try {
+        const parsed = JSON.parse(document.getElementById('json-input').value);
+        document.getElementById('json-output').value = JSON.stringify(parsed);
+        setMsg('json-msg', 'Minified.', 'ok');
+      } catch (e) { setMsg('json-msg', 'Invalid JSON: ' + e.message, 'error'); }
+    }
+    function jsonCopy() { copyText(document.getElementById('json-output').value, 'json-msg'); }
+    function jsonClear() {
+      document.getElementById('json-input').value = '';
+      document.getElementById('json-output').value = '';
+      setMsg('json-msg', '');
+    }
+
+    // Hash
+    async function generateHash() {
+      const text = document.getElementById('hash-input').value;
+      if (!text) { setMsg('hash-msg', 'Enter some text first.', 'error'); return; }
+      const alg = document.querySelector('input[name="hash-alg"]:checked').value;
+      try {
+        const buf = await crypto.subtle.digest(alg, new TextEncoder().encode(text));
+        const hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+        document.getElementById('hash-output').value = hex;
+        setMsg('hash-msg', alg + ' hash generated.', 'ok');
+      } catch { setMsg('hash-msg', 'Hash generation failed.', 'error'); }
+    }
+    function hashCopy() { copyText(document.getElementById('hash-output').value, 'hash-msg'); }
+    function hashClear() {
+      document.getElementById('hash-input').value = '';
+      document.getElementById('hash-output').value = '';
+      setMsg('hash-msg', '');
+    }
+  </script>
 </body>
 </html>
