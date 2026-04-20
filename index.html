@@ -311,6 +311,70 @@
 
     .hash-options label { font-size: 0.85rem; color: var(--muted); display: flex; align-items: center; gap: 0.3rem; cursor: pointer; }
 
+    /* --- PROJECTS --- */
+    #projects {
+      padding: 5rem 1.5rem;
+      background: var(--surface);
+    }
+
+    .project-card {
+      display: block;
+      padding: 1.75rem;
+      background: var(--bg);
+      border-radius: var(--radius);
+      border: 1px solid rgba(79, 70, 229, 0.08);
+      text-decoration: none;
+      color: var(--text);
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+      border-color: rgba(79, 70, 229, 0.2);
+    }
+
+    .project-tag {
+      display: inline-block;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+    }
+
+    .project-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+      letter-spacing: -0.02em;
+    }
+
+    .project-desc {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 1rem;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .project-links a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .project-links a:hover { text-decoration: underline; }
+
     /* --- ANIMATION --- */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(24px); }
@@ -331,6 +395,7 @@
     <nav>
       <span class="nav-logo">Wendy Lopez</span>
       <ul class="nav-links">
+        <li><a href="#projects">Projects</a></li>
         <li><a href="#tools">Tools</a></li>
         <li><a href="#links">Links</a></li>
       </ul>
@@ -343,6 +408,23 @@
       <h1>Hi, I'm <span>Wendy Lopez</span></h1>
       <p class="tagline">Software developer &middot; Open source enthusiast &middot; Lifelong learner</p>
       <a href="#links" class="btn">Find me online &darr;</a>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="section-inner">
+      <h2>Projects</h2>
+      <p class="section-sub">Things I've been building.</p>
+
+      <div class="project-card">
+        <span class="project-tag">SaaS &middot; Design Handoff</span>
+        <div class="project-title">Lumen SaaS</div>
+        <p class="project-desc">A multi-page SaaS interface with landing, console, docs, offline, and tweaks views — built as a single-file design handoff demo.</p>
+        <div class="project-links">
+          <a href="https://wendylopez19934-commits.github.io/design-handoff-lumen-saas/app.html" target="_blank" rel="noopener">Live demo &rarr;</a>
+          <a href="https://github.com/wendylopez19934-commits/design-handoff-lumen-saas" target="_blank" rel="noopener">Source &rarr;</a>
+        </div>
+      </div>
     </div>
   </section>
 
